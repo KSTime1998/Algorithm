@@ -1,0 +1,255 @@
+# 2438 - 별 찍기 - 1
+a = int(input())
+for i in range(1,a+1):
+  b = ""
+  for j in range(1,i+1):
+    b += "*"
+  print(b)
+
+# 2439 - 별 찍기 - 2
+a = int(input())
+for i in range(a):
+  b = ""
+  for j in range(a):
+    if i+1<a:
+      b += " "
+      i += 1
+    else:
+      b += "*"
+  print(b)
+
+# 2440 - 별 찍기 - 3
+a = int(input())
+for i in range(a):
+  b = ""
+  for j in range(a-i):
+    b += "*"
+  print(b)
+
+# 2441 - 별 찍기 - 4
+a = int(input())
+for i in range(a):
+  b = ""
+  for j in range(a):
+    if j>=i:
+      b += "*"
+    else:
+      b += " "
+  print(b)
+
+# 2442 - 별 찍기 - 5
+n = int(input())
+for i in range(n):
+  a = ""
+  b = ""
+  for j in range(1,2*(i+1)):
+    b += "*"
+  while i+1<n:
+    a += " "
+    i += 1
+  print(a+b)
+
+# 2443 - 별 찍기 - 6
+a = int(input())
+for i in range(a):
+  b = ""
+  for j in range(1,2*(a-i)):
+    while i>0:
+      b += " "
+      i -= 1
+    b += "*"
+  print(b)
+
+# 2444 - 별 찍기 - 7
+a = int(input())
+for i in range(1,a+1):
+  b = ""
+  for j in range(2*i-1):
+    while i<a:
+      b += " "
+      i += 1
+    b += "*"
+  print(b)
+for i in range(a-1):
+  b = ""
+  for j in range(2*(a-i)-3):
+    while i>=0:
+      b += " "
+      i -= 1
+    b += "*"
+  print(b)
+
+# 2445 - 별 찍기 - 8
+a = int(input())
+d = []
+for i in range(1,a+1):
+  b = ""
+  for j in range(i):
+    b += "*"
+  c = b
+  for j in range(2*(a-i)):
+    b += " "
+  d.append(b+c)
+  print(b+c)
+
+for i in range(a-1):
+  print(d[a-i-2])
+
+# 2446 - 별 찍기 - 9
+a = int(input())
+d = []
+for i in range(a):
+  b = ""
+  for j in range(2*(a-i)-1):
+    while i>0:
+      b += " "
+      i -= 1
+    b += "*"
+  d.append(b)
+  print(b)
+
+for i in range(a-1):
+  print(d[a-i-2])
+
+# 2522 - 별 찍기 - 12
+a = int(input())
+c = []
+for i in range(a):
+  b = ""
+  for j in range(a):
+    if a-i>1:
+      b += " "
+      i += 1
+    else :
+      b += "*"
+  print(b)
+  c.append(b)
+for i in range(a-1):
+  print(c[a-i-2])
+
+# 2523 - 별 찍기 - 13
+a = int(input())
+c = []
+for i in range(a):
+  b = ""
+  for j in range(i+1):
+    b += "*"
+  c.append(b)
+  print(b)
+for i in range(a-1):
+  print(c[a-i-2])
+
+# 10990 - 별 찍기 - 15
+a = int(input())
+for i in range(a):
+  b = ""
+  c = i
+  for j in range(a):
+    if a-i>1:
+      b += " "
+      i += 1
+    if a-i==1:
+      b += "*"
+      break
+  for k in range(2*c-1):
+    b += " "
+  if c == 0:
+    print(b)
+  else:
+    print(b+'*')
+
+# 10991 - 별 찍기 - 16
+a=int(input())
+for i in range(a):
+  b=""
+  c=i
+  for j in range(a):
+    if a-i>2:
+      b+=" "
+      i+=1
+  for j in range(c+1):
+    if c==a-1:
+      b+="*"
+      c+=1
+    else:
+      b+=" *"
+  print(b)
+
+# 10992 - 별 찍기 - 17
+a=int(input())
+for i in range(a-1):
+  b=""
+  for j in range(a-i-1):
+    if j<a-i-1:
+      b+=" "
+  b+="*"
+  for j in range(2*i-1):
+    b+=" "
+  if i>0:
+    b+="*"
+  print(b)
+b=""
+for i in range(2*a-1):
+  b+="*"
+print(b)
+
+# 10995 - 별 찍기 - 20
+a=int(input())
+for i in range(a):
+  b=""
+  if i%2==0:
+    for i in range(a-1):
+      b+="* "
+    b+="*"
+  else:
+    for i in range(a):
+      b+=" *"
+  print(b)
+
+# 10996 - 별 찍기 - 21
+a=int(input())
+for i in range(2*a):
+  b=""
+  if i%2==0:
+    b+="*"
+    for j in range((a-1)//2):
+      b+=" *"
+  else:
+    for j in range(a//2):
+      b+=" *"
+  print(b)
+
+# 13015 - 별 찍기 - 23
+a=int(input())
+c=[]
+for i in range(a):
+  b=""
+  if i==0:
+    for j in range(a):
+      b+="*"
+    for j in range(2*a-3):
+      b+=" "
+    for j in range(a):
+      b+="*"
+  else:
+    for j in range(i):
+      b+=" "
+    b+="*"
+    for j in range(a-2):
+      b+=" "
+    b+="*"
+    if i==a-1:
+      for j in range(a-2):
+        b+=" "
+      b+="*"
+    else:
+      for j in range(2*a-3-2*i):
+        b+=" "
+      b+="*"
+      for j in range(a-2):
+        b+=" "
+      b+="*"
+  c.append(b)
+  print(b)
+for i in range(a-1):
+  print(c[a-i-2])
