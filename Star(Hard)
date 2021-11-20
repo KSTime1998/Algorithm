@@ -1,0 +1,105 @@
+# 2447 - 별 찍기 - 10
+def Line(l1,l2):
+  A =  [''.join(x) for x in zip(l1,l2,l1)]
+  return A
+           
+def Process(n):
+  if n == 1:
+    return ['*']
+  if n != 1:
+    a = Process(n//3)
+    L1 = Line(a,a)
+    L2 = Line(a,[' '*(n//3)]*(n//3))
+
+  return L1 + L2 + L1
+
+print('\n'.join(Process(int(input()))))
+
+
+# 10994 - 별 찍기 - 19
+def Line(l1,l2,l3):
+  return [''.join(x) for x in zip(l1,l2,l3)]
+
+def Square(n):
+  if n == 1:
+    return ['*']
+  n -= 1
+  a = Square(n)
+  tb = ['*'*((n*4)+1)]
+  term = ['*'+' '*((4*n)-1)+'*']
+  mid = Line(['* ']*((4*n)-3),a,[' *']*((4*n)-3))
+
+  return tb + term + mid + term + tb
+
+print('\n'.join(Square(int(input()))))
+
+
+# 10997 - 별 찍기 - 22 (Silver 2)
+def Line(a,b,c):
+  return [''.join(x) for x in zip(a,b,c)]
+
+def A(n):
+  if n == 1:
+    return ['*']
+  n -= 1
+  X = A(n)
+  if n == 1:
+    X = ['*'] * 3
+  tb = ['*'*(4*n+1)]
+  t = ['*']
+  mid = Line(['* ']*(4*n-1),X,['**']+[' '*(4*n-3)+'*']+[' *']*(4*n-3))
+  b = ['*'+' '*(4*n-1)+'*']
+
+  return tb + t + mid + b + tb
+
+print('\n'.join(A(int(input()))))
+
+
+# 10993 - 별 찍기 - 18 (Gold 4) - 미제출
+def A(n):
+  if n == 1:
+    return ['*']
+  if n == 2:
+    return ['*****',' ***','  *']
+  n -= 1
+  X = A(n)
+  num = 2**(n+1)-1
+  t = ['*'*(num*2-1)]
+  
+
+  so = ['']
+  for _ in range((num-1)):
+    so.append(so[-1]+' ')
+
+  si = ['']
+  for _ in range((num-1)//2 -1):
+    si.append(si[-1]+'  ')
+
+  if n%2 == 0:
+    so.reverse()
+    u = [so[0]+'*'] + [so[i]+'*'+so[-(2*i)]+'*' for i in range(1,(num-1)//2)]
+    d = [so[(num-1)//2]+'*'+X[0]+'*']+[so[(num-1)//2+i]+'*'+si[i]+X[i].lstrip()+si[i]+'*'for i in range(1,(num-1)//2)]
+    return u + d + t
+
+  else:
+    si.reverse()
+    u = [so[i+1] + '*' + si[i] + X[i].lstrip() + si[i] + '*' for i in range((num-1)//2)]
+    d = [so[i+1+(num-1)//2] + '*' + so[-4-(2*i)] + '*' for i in range(0,(num-1)//2-1)] + [so[-1]+'*']
+    return t + u + d
+ 
+print('\n'.join(A(int(input()))))
+
+
+# 2448 - 별 찍기 - 11 (Gold 4)
+def A(n):
+  if n == 3 :
+    return ['  *  ',' * * ','*****']
+  n //= 2
+  X = A(n)
+  s = ' '*n
+  t = [s + i + s for i in X]
+  b = [i + ' ' + i for i in X]
+
+  return t + b
+
+print('\n'.join(A(int(input()))))
