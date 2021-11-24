@@ -1,0 +1,128 @@
+# 2496 - 금강석 (Platinum 3)
+import sys
+N,M,T,K = map(int,sys.stdin.readline().split())
+Diamond = [list(map(int,sys.stdin.readline().split())) for _ in range(T)]
+ans = 0
+coord = ''
+
+# K는 항상 짝수. 중앙점 기준으로 상하좌우 K/2의 크기를 가지는 마름모.
+# 중심좌표를 [x,y]라 할 때, D-사각형 : [x-K//2,y]~[x,y+K//2]~[x+K//2,y]~[x,y-K//2]
+# 금강석 좌표 [i,j]와 비교하여 abs(x-i)+abs(y-j) <= K이면 금강석은 D-사각형 안에 있다.
+# ***** 시간복잡도 = O(100)
+def D_Square(x,y):
+  global ans,coord
+  D_S = 0
+  for t in Diamond:
+    A = t[0]
+    B = t[1]
+    if abs(A-x)+abs(B-y) <= K//2:
+      D_S += 1
+  if ans < D_S:
+    ans = D_S
+    coord = str(x)+' '+str(y)
+
+# 중심좌표 설정하는 함수 - 최적화 필요함
+# 크게 네 가지로 나눌 수 있다.
+# ***** 시간복잡도 = O(10)
+from math import ceil
+def center(x1,y1,x2,y2):
+  #1 양 끝에 걸치는 경우 - 경우에 따라 각각 1가지
+  ## 좌우로 걸치는 경우
+  if abs(x1-x2) == K:
+    return [[(x1+x2)//2,y1]]
+  ## 상하로 걸치는 경우
+  elif abs(y1-y2) == K:
+    return [[x1,(y1+y2)//2]]
+
+  max_x = max(x1,x2)
+  min_x = min(x1,x2)
+  max_y = max(y1,y2)
+  min_y = min(y1,y2)
+  #2 마주보는 변에 위치하는 경우 - 경우에 따라 각각 2가지(둘 중 하나를 꼭지점에 걸치게)
+  if abs(x1-x2) + abs(y1-y2) == K:
+    ## 둘 다 모서리에 걸치는 경우
+    if abs(x1-x2) == abs(y1-y2):
+      if x1-x2 == y1-y2 :
+        return [[max_x,min_y],[min_x,max_y]]
+      else:
+        return [[max_x,max_y],[min_x,min_y]]
+    ## 양옆으로 넓은 경우
+    elif abs(x1-x2) > abs(y1-y2):
+      if (x1 > x2 and y1 > y2) or (x1 < x2 and y1 < y2):
+        return [[min_x+K//2,min_y],[max_x-K//2,max_y]]
+      else:
+        return [[max_x-K//2,min_y],[min_x+K//2,max_y]]
+    ## 위아래로 넓은 경우
+    elif (x1 > x2 and y1 > y2) or (x1 < x2 and y1 < y2):
+      return [[min_x,min_y+K//2],[max_x,max_y-K//2]]
+    else:
+      return [[max_x,min_y+K//2],[min_x,max_y-K//2]]
+
+  else:
+    #3 같은 변에 위치하는 경우(꼭지점에는 하나만 있음) - 경우에 따라 각각 4가지
+    if abs(x1-x2) == abs(y1-y2):
+      if (x1 > x2 and y1 > y2) or (x1 < x2 and y1 < y2):
+        return [[max_x-K//2,max_y],[max_x,max_y-K//2],[min_x+K//2,min_y],[min_x,min_y+K//2]]
+      else:
+        return [[max_x-K//2,min_y],[max_x,min_y+K//2],[min_x+K//2,max_y],[min_x,max_y-K//2]]
+
+    #4 인접한 변에 위치하는 경우 - 2가지(위아래 교점이 각각 위아래 꼭지점이 되도록).
+    ##### 홀수의 경우 좌표값이 0.5가 되는데 이는 불가능하므로 4가지로 늘어남...
+    else:
+      ## 양옆으로 넓은 경우
+      if abs(x1-x2) > abs(y1-y2):
+        if (x1 > x2 and y1 > y2) or (x1 < x2 and y1 < y2):
+          a = ceil((max_x + max_y - min_x - min_y)/2)
+          b = ceil((max_x - max_y - min_x + min_y)/2)
+          if (abs(x1-x2)+abs(y1-y2))%2 == 1:
+            return [[max_x-a,max_y-a+K//2],[max_x-b,max_y+b-K//2],[max_x-a+1,max_y-a+K//2],[max_x-b+1,max_y+b-K//2]]
+          else:
+            return [[max_x-a,max_y-a+K//2],[max_x-b,max_y+b-K//2]]
+        else:
+          a = ceil((max_x + min_y - min_x - max_y)/2)
+          b = ceil((max_x - min_y - min_x + max_y)/2)
+          if (abs(x1-x2)+abs(y1-y2))%2 == 1:
+            return [[max_x-a,min_y-a+K//2],[max_x-b,min_y+b-K//2],[max_x-a+1,min_y-a+K//2],[max_x-b+1,min_y+b-K//2]]
+          else:
+            return [[max_x-a,min_y-a+K//2],[max_x-b,min_y+b-K//2]]
+      ## 위아래로 넓은 경우
+      elif (x1 > x2 and y1 > y2) or (x1 < x2 and y1 < y2):
+        a = ceil((max_x + max_y - min_x - min_y)/2)
+        b = ceil((max_y - max_x - min_y + min_x)/2)
+        if (abs(x1-x2)+abs(y1-y2))%2 == 1:
+          return [[max_x-a+K//2,max_y-a],[max_x+b-K//2,max_y-b],[max_x-a+K//2,max_y-a+1],[max_x+b-K//2,max_y-b+1]]
+        else:
+          return [[max_x-a+K//2,max_y-a],[max_x+b-K//2,max_y-b]]
+      else:
+        a = ceil((max_y - max_x - min_y + min_x)/2)
+        b = ceil((max_y - min_x + max_x - min_y)/2)
+        if (abs(x1-x2)+abs(y1-y2))%2 == 1:
+          return [[max_x+a-K//2,min_y+a],[max_x-b+K//2,min_y+b],[max_x+a-K//2,min_y+a-1],[max_x-b+K//2,min_y+b-1]]
+        else:
+          return [[max_x+a-K//2,min_y+a],[max_x-b+K//2,min_y+b]]
+
+# 만약 K가 max(N,M)의 두 배보다 크다면, 가운데에서 덮어버리는 것으로 전부 해결 가능하다.
+if K > (max(N,M) + 1) * 2:
+  print(str(N//2),str(M//2),sep=' ')
+  print(T)
+
+else:
+  # 금강석끼리의 좌표를 비교할 때에는 그 한도가 2*K로 늘어난다.
+  # 만약 한 금강석이 다른 금강석과 충분히 가까우면, 두 금강석을 경계면에 가지는 D-사각형 1개 or 2개를 만들어 D_Square를 수행한다.
+  # ***** 시간복잡도 = O(T^2) * 2
+  for i in range(T):
+    A1 = Diamond[i][0]
+    B1 = Diamond[i][1]
+    for j in range(i+1,T):
+      A2 = Diamond[j][0]
+      B2 = Diamond[j][1]
+      if abs(A1-A2)+abs(B1-B2) <= K:
+        for i in center(A1,B1,A2,B2):
+          D_Square(i[0],i[1])
+
+  if coord == '':
+    print(Diamond[0][0],Diamond[0][1],sep=' ')
+    print(ans)
+  else:
+    print(coord)
+    print(ans)
