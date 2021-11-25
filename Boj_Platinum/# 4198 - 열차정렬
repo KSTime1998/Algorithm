@@ -1,0 +1,36 @@
+# 4198 - 열차정렬 (Platinum 5)
+import sys
+N = int(sys.stdin.readline())
+T = []
+for _ in range(N):
+ T.append(int(sys.stdin.readline()))
+MX = 0
+
+def t(L,j):
+  if L[0] > j:
+    return
+  elif L[-1] < j:
+    L.append(j)
+    return
+  mn = 0
+  mx = len(L)
+  while mx > mn:
+    m = (mn+mx)//2
+    if L[m] > j:
+      mx = m
+    else:
+      mn = m+1
+  L[mx] = j
+
+for x in range(N):
+  lis = [T[x]]
+  lds = [-T[x]]
+  for i in range(x+1,N):
+    t(lis,T[i])
+    t(lds,-T[i])
+  a = len(lis)+len(lds)-1
+  MX = max(MX,a)
+  if N-x < MX:
+    break
+
+print(MX)
