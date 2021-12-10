@@ -1,0 +1,68 @@
+# 1006 - 습격자 초라기 (Platinum 3)
+import sys
+
+def attack(U,D):
+  global ans
+  same = [0] * (N+1)
+  upper = [0] * (N+1)
+  lower= [0] * (N+1)
+  lower[1] = upper[1] = 1
+  if s1[0] + s2[0] <= W and U == D == 0:
+    same[1] = 1
+  else:
+    same[1] = 2
+
+  for n in range(1,N):
+    s = set()
+    u = {same[n]+1}
+    d = {same[n]+1}
+    if s1[n] + s2[n] <= W:
+      s.add(same[n] + 1)
+      s.add(upper[n] + 2)
+      s.add(lower[n] + 2)
+    else:
+      s.add(same[n] + 2)
+
+    if s1[n-1] + s1[n] <= W:
+      s.add(same[n-1] + 3)
+      s.add(lower[n] + 2)
+      u.add(lower[n] + 1)
+      u.add(same[n-1] + 2)
+      if s2[n-1] + s2[n] <= W:
+        s.add(same[n-1] + 2)
+
+    if s2[n-1] + s2[n] <= W:
+      s.add(same[n-1] + 3)
+      s.add(upper[n] + 2)
+      d.add(same[n-1] + 2)
+      d.add(upper[n] + 1)
+
+    same[n+1] = min(s)
+    upper[n+1] = min(u)
+    lower[n+1] = min(d)
+    
+  if U == 1:
+    if D == 1:
+      ans = min(ans,same[-2])
+    else:
+      ans = min(ans,lower[-1])
+  elif D == 1:
+    ans = min(ans,upper[-1])
+  else:
+    ans = min(ans,same[-1])
+
+for i in range(int(sys.stdin.readline())):
+  N,W = map(int,sys.stdin.readline().split())
+  s1 = list(map(int,sys.stdin.readline().split()))
+  s2 = list(map(int,syd.stdin.readline().split()))
+  ans = 2*N + 1
+  attack(0,0)
+  if N > 1:
+    if s1[-1] + s1[0] <= W:
+      attack(1,0)
+      if s2[-1] + s2[0] <= W:
+        attack(1,1)
+    if s2[-1] + s2[0] <= W:
+      attack(0,1)
+
+  print(ans)
