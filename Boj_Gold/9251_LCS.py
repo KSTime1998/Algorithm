@@ -1,25 +1,30 @@
-# 9251 - LCS (Gold 5) - 힘든 싸움이었다
-#str1,str2 = input().split()
+# 9251 - LCS (Gold 5)
+import sys
+str1 = sys.stdin.readline().rstrip()
+str2 = sys.stdin.readline().rstrip()
 str2set = set(str2)
 LCS = []
-for s in str1:
-  if s in str2set:
-    LCS = [str2.find(s)]
+
+for i in range(len(str1)):
+  if str1[i] in str2set:
+    LCS = [str2.find(str1[i])]
+    start = i
     break
 
-for i in range(0,len(str1)):
+for i in range(i+1,len(str1)):
   s = str1[i]
   if s not in str2set:
     continue
-  for J in range(1,len(LCS)+1):
-    j = -J
-    if j == -len(LCS):
+  for j in range(len(LCS)-1,-1,-1): 
+    if j == len(LCS)-1:
+      a = str2[LCS[-1]+1:].find(s)
+      if a != -1:
+        LCS.append(a + 1 + LCS[-1])
+    if j == 0:
       LCS[0] = min(str2.find(s),LCS[0])
-    if j == -1 and str2[LCS[-1]+1:].find(s) != -1:
-      LCS.append(str2[LCS[-1]+1:].find(s)+1+LCS[-1])
-    elif J<len(LCS):
-      a = str2[LCS[j-1]+1:].find(s)
-      if a != -1 and a+LCS[j-1]+1 < LCS[j]:
-        LCS[j] = a+LCS[j-1]+1
+    elif j > 0:
+      b = str2[LCS[j-1]+1:].find(s)
+      if b != -1:
+        LCS[j] = min(b + LCS[j-1] + 1, LCS[j])
 
 print(len(LCS))
