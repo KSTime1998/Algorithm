@@ -1,4 +1,4 @@
-# 1991 - 트리 순회 (Silver 1) - 많이 배웠다!
+# 1991 - 트리 순회 (Silver 1)
 import sys
 node = {}
 N = int(sys.stdin.readline())
