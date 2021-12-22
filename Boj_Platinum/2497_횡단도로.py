@@ -1,4 +1,4 @@
-# 2497 - 횡단도로 (Platinum 4) - 아직 맞는지 모름
+# 2497 - 횡단도로 (Platinum 4)
 import sys
 N = int(sys.stdin.readline())
 city = [list(map(int,sys.stdin.readline().split())) for _ in range(N)]
